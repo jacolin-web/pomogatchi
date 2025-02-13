@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>pomogatchi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="main.css">
+</head>
+<body>
+   <div class="center main-font">
+    <form id="settings-form">
+      <label> # of Sessions: </label>
+      <input id="sessions" class="main-font" type="number" min="1" max="5" placeholder="0">
+      <br/>
+      <br/>
+      <label> Sessions Time: </label>
+      <input id="sessions-time" class="main-font" type="number" min="25" max="50" placeholder="0">
+      <br/>
+      <br/>
+      <label> Short Break: </label>
+      <input id="short-break" class="main-font" type="number" min="5" max="15" placeholder="0">
+      <br/>
+      <br/>
+      <label> Long Break: </label>
+      <input id="long-break" class="main-font" type="number" min="15" max="30" placeholder="0">
+      <br/>
+      <br/>
+      <button id="save-settings" class="main-font">Save Settings</button>
+    </form>
+  </div>
+  
+  <script src="./scripts/pomogatchi.js"></script>
+  </script>
+</body>
+</html>

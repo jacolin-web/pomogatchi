@@ -1,0 +1,19 @@
+{
+  "name": "pomogatchi",
+  "productName": "pomogatchi",
+  "description": "A cute focus pomodoro inspired by tamagatchi pets!",
+  "keywords": [],
+  "main": "./main.js",
+  "version": "1.0.0",
+  "author": "jacquelinelinang",
+  "scripts": {
+    "start": "electron .",
+    "build": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "electron-settings": "^4.0.4"
+  },
+  "devDependencies": {
+    "electron": "34.1.1"
+  }
+}
