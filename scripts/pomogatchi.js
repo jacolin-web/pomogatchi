@@ -1,53 +1,32 @@
-//DEFAULT VALUES
-const DEFAULT_SESSIONS = 3;
-const DEFAULT_SESSION_TIME = 1;
-const DEFAULT_SHORT_BREAK = 5;
-const DEFAULT_LONG_BREAK = 15;
-const DEFAULT_SEC_PER_MIN = 60;
-
-// Retrieve and convert the session values from localStorage, with proper fallback
-let sessions = parseInt(localStorage.sessions) || DEFAULT_SESSIONS;
-let sessionTime = parseInt(localStorage.sessionTime) || DEFAULT_SESSION_TIME;
-let shortBreak = parseInt(localStorage.shortBreak) || DEFAULT_SHORT_BREAK;
-let longBreak = parseInt(localStorage.longBreak) || DEFAULT_LONG_BREAK;
-
-// Create a default dictionary for each session type
-const sessionTypes = [
-  {
-    type: "Session", // Represents a work session
-    time: sessionTime * DEFAULT_SEC_PER_MIN,
-    message: "Let's get to it!!"
-  },
-  {
-    type: "Short Break", // Represents a short break
-    time: shortBreak * DEFAULT_SEC_PER_MIN,
-    message: "Take a short break!"
-  },
-  {
-    type: "Long Break", // Represents a long break
-    time: longBreak * DEFAULT_SEC_PER_MIN,
-    message: "Take a long break!"
-  }
-];
+import { 
+  sessionTypes,
+  DEFAULT_SESSIONS
+} from './constants.js';
 
 // Global variable to track the sessions array
+let sessions = parseInt(localStorage.sessions) || DEFAULT_SESSIONS;
 let sessionsArray = [];
+let timer;
+let currentTime;
 
 // Function to build the schedule array
 function buildSchedule() {
+  //Add warm up session
+  sessionsArray.push(sessionTypes[0]);
+
   // Loop through each session
   for (let i = 0; i < sessions; i++) {
     // Add the session time to the array
-    sessionsArray.push(sessionTypes[0]);
+    sessionsArray.push(sessionTypes[1]);
     
     // Add a short break if it's not the last session
     if (i < sessions - 1) {
-      sessionsArray.push(sessionTypes[1]);
+      sessionsArray.push(sessionTypes[2]);
     }
   }
   
   // Add the long break after all sessions
-  sessionsArray.push(sessionTypes[2]);
+  sessionsArray.push(sessionTypes[3]);
   
   // Output the array for debugging
   console.log(sessionsArray);
@@ -59,6 +38,7 @@ buildSchedule();
 //Global variables
 let currentIndex = 0; // To keep track of the current time period in the array
 let timeLeft = sessionsArray[currentIndex].time; // Start with the first session
+let isRunning = false;
 
 //SELECTORS
 const timeDisplay = document.getElementById('time');
@@ -74,25 +54,42 @@ updateDisplay(timeLeft);
 
 // Function to handle the timer based on the array
 function startTimer() {
-  if (currentIndex < sessionsArray.length) {
-    // Update the timer for the current time period
+  startButton.hidden = true;
+  pauseButton.hidden = false;
+
+  if (!isRunning && currentIndex < sessionsArray.length) {
+    isRunning = true;
+
     let currentSession = sessionsArray[currentIndex];
-    let currentTime = currentSession.time;
-  
+    currentTime = currentSession.time;
+    timeLeft = currentTime;
+
     // Update the display with the session message
     displayMessage.innerHTML = currentSession.message;
-    
-   // Start the timer for the current session
-   setInterval(() => {
+
+    // Start the timer for the current session
+    timer = setInterval(() => {
       if (currentTime > 0) {
         currentTime--;
         updateDisplay(currentTime);
       } else {
         // Move to the next session once the current one finishes
         currentIndex++;
-        if (currentIndex < scheduleArray.length) {
+
+        if (currentIndex < sessionsArray.length) {
           // Set time for the next session and update message
-          timeLeft = scheduleArray[currentIndex].time;
+          let nextSession = sessionsArray[currentIndex];
+          timeLeft = nextSession.time;
+          currentTime = timeLeft;
+          updateDisplay(timeLeft);
+          displayMessage.innerHTML = nextSession.message; // Update the message
+        } else {
+          // All sessions are done; stop the timer
+          clearInterval(timer);
+          displayMessage.innerHTML = "All done! Great job!";
+          isRunning = false;
+          startButton.hidden = false;
+          pauseButton.hidden = true;
         }
       }
     }, 1000);
@@ -113,12 +110,14 @@ function pauseTimer() {
     isRunning = false;
     clearInterval(timer);
   }
+  pauseButton.hidden = true;
+  startButton.hidden = false;
 }
 
 function resetTimer() {
   isRunning = false;
   clearInterval(timer);
-  timeLeft = sessionTime * DEFAULT_SEC_PER_MIN;
+  currentIndex = 0;
   // Reset to default session time in minutes
   updateDisplay(timeLeft);
 }
@@ -133,9 +132,6 @@ if (timeDisplay) {
   resetButton?.addEventListener('click', resetTimer);
   settingsButton?.addEventListener('click', settingsPage);
 }
-
-
-
 
 form?.addEventListener('submit', function(event) {
   event.preventDefault();
