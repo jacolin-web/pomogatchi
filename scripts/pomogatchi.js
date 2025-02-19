@@ -133,10 +133,10 @@ if (timeDisplay) {
 form?.addEventListener('submit', function(event) {
   event.preventDefault();
     // Accessing values of the inputs
-    sessions = document.getElementById('sessions').value;
-    sessionTime = document.getElementById('sessions-time').value;
-    shortBreak = document.getElementById('short-break').value;
-    longBreak = document.getElementById('long-break').value;
+    const sessions = document.getElementById('sessions').value;
+    const sessionTime = document.getElementById('sessions-time').value;
+    const shortBreak = document.getElementById('short-break').value;
+    const longBreak = document.getElementById('long-break').value;
 
     // You can then use these values to save to localStorage or pass them back to the timer page
     // Example: Save to localStorage (you can adjust this as needed)
