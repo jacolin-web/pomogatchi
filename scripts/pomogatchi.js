@@ -27,9 +27,6 @@ function buildSchedule() {
   
   // Add the long break after all sessions
   sessionsArray.push(sessionTypes[3]);
-  
-  // Output the array for debugging
-  console.log(sessionsArray);
 }
 
 // Build the schedule
