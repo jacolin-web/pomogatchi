@@ -2,8 +2,8 @@
 
 Simple focus app that combines the idea of pomodoro timers and tamagotchi! A pet to work with you through each sessions!
 
-<img src="/assets/pomogatchi.png"/>
-<img src="/assets/settings.png"/>
+<img width="150px" src="/assets/pomogatchi.png"/>
+<img width="150px" src="/assets/settings.png"/>
 
 
 ## Current features
